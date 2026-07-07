@@ -280,7 +280,7 @@ export default function Home() {
 
             >
 
-              <Sparkles size={14} />
+              <Sparkles size={14} style={{ backgroundColor: "#ef4444" }} />
 
               Available for new projects
 
