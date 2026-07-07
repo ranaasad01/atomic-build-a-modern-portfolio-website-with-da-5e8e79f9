@@ -1,5 +1,4 @@
 "use client";
-
 import { useRef, useState } from "react";
 import Link from "next/link";
 
@@ -417,7 +416,7 @@ export default function HomePage() {
           className="relative max-w-6xl mx-auto px-6 pt-32 pb-24 grid md:grid-cols-2 gap-16 items-center"
           data-atomic-id="awp9do1"
           style={{
-            backgroundColor: "#ef4444"
+            backgroundColor: "#22c55e"
           }}>
 
           {/* Left: copy */}
