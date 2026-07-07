@@ -731,7 +731,10 @@ export default function HomePage() {
             <span
               className="font-display text-4xl md:text-5xl font-bold text-white tracking-tight mb-1"
               data-atomic-id="afmy07l"
-              data-atomic-instance={__atomicIdx}>
+              data-atomic-instance={__atomicIdx}
+              style={__atomicIdx === 3 ? {
+                color: "#ef4444"
+              } : undefined}>
 
               {stat.value}
 
