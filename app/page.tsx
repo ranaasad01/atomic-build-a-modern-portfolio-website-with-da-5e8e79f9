@@ -411,7 +411,10 @@ export default function HomePage() {
 
         <div
           className="relative max-w-6xl mx-auto px-6 pt-32 pb-24 grid md:grid-cols-2 gap-16 items-center"
-          data-atomic-id="awp9do1">
+          data-atomic-id="awp9do1"
+          style={{
+            backgroundColor: "#ef4444"
+          }}>
 
           {/* Left: copy */}
 
