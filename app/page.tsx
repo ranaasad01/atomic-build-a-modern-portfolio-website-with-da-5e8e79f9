@@ -180,21 +180,9 @@ const experiences = [
 
     description:
 
-      "Developed the canvas renderer and interaction engine for Framer's no-code editor. Shipped the first version of the component marketplace.",
+      "Prototyped and shipped the canvas interaction engine. Contributed to the open-source motion library and mentored two junior engineers.",
 
   },
-
-];
-
-const socials = [
-
-  { icon: Github, label: "GitHub", href: "https://github.com" },
-
-  { icon: Twitter, label: "Twitter", href: "https://twitter.com" },
-
-  { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com" },
-
-  { icon: Mail, label: "Email", href: `mailto:${APP_EMAIL}` },
 
 ];
 
@@ -204,19 +192,19 @@ export default function Home() {
 
   const shouldReduceMotion = useReducedMotion();
 
-  const formRef = useRef<HTMLFormElement>(null);
+  const [formState, setFormState] = useState({ name: "", email: "", message: "" });
 
-  const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [formStatus, setFormStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
 
     e.preventDefault();
 
-    setFormState("sending");
+    setFormStatus("sending");
 
-    await new Promise((r) => setTimeout(r, 1400));
+    await new Promise((r) => setTimeout(r, 1200));
 
-    setFormState("sent");
+    setFormStatus("sent");
 
   };
 
@@ -230,7 +218,7 @@ export default function Home() {
 
         id="home"
 
-        className="relative min-h-screen flex items-center justify-center px-6 pt-24 pb-16 overflow-hidden"
+        className="relative min-h-screen flex flex-col justify-center items-center text-center px-6 pt-24 pb-16 overflow-hidden"
 
       >
 
@@ -246,159 +234,145 @@ export default function Home() {
 
         {/* Grid overlay */}
 
-        <div
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:72px_72px] pointer-events-none" />
 
-          className="absolute inset-0 opacity-[0.03]"
+        {/* Content */}
 
-          style={{
+        <motion.div
 
-            backgroundImage:
+          variants={staggerContainer}
 
-              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+          initial="hidden"
 
-            backgroundSize: "60px 60px",
+          animate="visible"
 
-          }}
+          className="relative z-10 max-w-4xl mx-auto"
 
-        />
+        >
 
-        <div className="relative z-10 max-w-4xl mx-auto">
+          {/* Availability badge */}
 
-          <div className="max-w-3xl">
+          <motion.div variants={fadeInUp} className="flex justify-center mb-8">
 
-            {/* Badge */}
+            <div style={{ backgroundColor: '#ef4444' }} className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 text-sm text-white/70">
 
-            <motion.div
-
-              variants={fadeIn}
-
-              initial="hidden"
-
-              animate="visible"
-
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-sm font-medium mb-8"
-
-            >
-
-              <Sparkles size={14} style={{ backgroundColor: "#ef4444" }} />
+              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
 
               Available for new projects
 
-            </motion.div>
+            </div>
 
-            {/* Headline */}
+          </motion.div>
 
-            <motion.h1
+          {/* Headline */}
 
-              variants={fadeInUp}
+          <motion.h1
 
-              initial="hidden"
+            variants={fadeInUp}
 
-              animate="visible"
+            className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.05] mb-6"
 
-              className="font-display text-5xl sm:text-6xl md:text-7xl font-bold leading-[1.05] tracking-tight mb-6"
+          >
+
+            Hi, I&apos;m{" "}
+
+            <span className="bg-gradient-to-r from-purple-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">
+
+              {APP_NAME}
+
+            </span>
+
+          </motion.h1>
+
+          {/* Sub-headline */}
+
+          <motion.p
+
+            variants={fadeInUp}
+
+            className="text-lg sm:text-xl text-white/50 max-w-2xl mx-auto leading-relaxed mb-10"
+
+          >
+
+            I build{" "}
+
+            <span className="text-white/80 font-medium">fast, accessible, beautiful</span>{" "}
+
+            web products — from pixel-perfect UIs to scalable back-end systems.
+
+          </motion.p>
+
+          {/* CTAs */}
+
+          <motion.div variants={fadeInUp} className="flex flex-wrap justify-center gap-4">
+
+            <Link
+
+              href="#projects"
+
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-purple-500 text-white font-semibold text-sm hover:bg-purple-400 transition-all duration-300 shadow-[0_0_24px_rgba(168,85,247,0.4)] hover:shadow-[0_0_36px_rgba(168,85,247,0.6)]"
+
+            >
+
+              View my work <ArrowRight size={16} />
+
+            </Link>
+
+            <Link
+
+              href="#contact"
+
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-white/15 text-white/80 font-semibold text-sm hover:border-white/30 hover:text-white transition-all duration-300"
 
             >
 
-              Hi, I&apos;m{" "}
+              Get in touch
 
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600">
+            </Link>
 
-                {APP_NAME}
+          </motion.div>
 
-              </span>
+          {/* Social row */}
 
-              <br />
+          <motion.div variants={fadeInUp} className="flex justify-center items-center gap-5 mt-12">
 
-              <span className="text-white/80">I build things</span>
+            {[
 
-              <br />
+              { icon: Github, label: "GitHub", href: "https://github.com" },
 
-              <span className="text-white/40">for the web.</span>
+              { icon: Twitter, label: "Twitter", href: "https://twitter.com" },
 
-            </motion.h1>
+              { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com" },
 
-            {/* Sub */}
+              { icon: Mail, label: "Email", href: `mailto:${APP_EMAIL}` },
 
-            <motion.p
-
-              variants={fadeInUp}
-
-              initial="hidden"
-
-              animate="visible"
-
-              className="text-lg text-white/50 leading-relaxed mb-10 max-w-xl"
-
-            >
-
-              {APP_TAGLINE} specialising in performant React applications,
-
-              design systems, and delightful micro-interactions.
-
-            </motion.p>
-
-            {/* CTAs */}
-
-            <motion.div
-
-              variants={fadeInUp}
-
-              initial="hidden"
-
-              animate="visible"
-
-              className="flex flex-wrap gap-4"
-
-            >
+            ].map(({ icon: Icon, label, href }) => (
 
               <a
 
-                href="#projects"
+                key={label}
 
-                style={{ color: '#ffffff' }}
+                href={href}
 
-                onClick={(e) => {
+                target={href.startsWith("http") ? "_blank" : undefined}
 
-                  e.preventDefault();
+                rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
 
-                  document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
+                aria-label={label}
 
-                }}
-
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-purple-500 hover:bg-purple-400 font-semibold text-sm transition-all duration-300 shadow-[0_0_24px_rgba(168,85,247,0.35)] hover:shadow-[0_0_36px_rgba(168,85,247,0.55)] hover:-translate-y-0.5"
+                className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-purple-400 hover:border-purple-500/40 hover:bg-purple-500/10 transition-all duration-300"
 
               >
 
-                View my work <ArrowRight size={16} />
+                <Icon size={16} />
 
               </a>
 
-              <a
+            ))}
 
-                href="#contact"
+          </motion.div>
 
-                onClick={(e) => {
-
-                  e.preventDefault();
-
-                  document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
-
-                }}
-
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-white/10 text-white/70 hover:text-white hover:border-white/30 font-semibold text-sm transition-all duration-300 hover:-translate-y-0.5"
-
-              >
-
-                Get in touch
-
-              </a>
-
-            </motion.div>
-
-          </div>
-
-        </div>
+        </motion.div>
 
         {/* Scroll indicator */}
 
@@ -408,23 +382,15 @@ export default function Home() {
 
           animate={{ opacity: 1 }}
 
-          transition={{ delay: 1.2 }}
+          transition={{ delay: 1.5, duration: 0.8 }}
 
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
 
         >
 
-          <span className="text-xs text-white/20 tracking-widest uppercase">Scroll</span>
+          <span className="text-xs text-white/20 uppercase tracking-widest">Scroll</span>
 
-          <motion.div
-
-            animate={{ y: [0, 8, 0] }}
-
-            transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }}
-
-            className="w-px h-8 bg-gradient-to-b from-white/20 to-transparent"
-
-          />
+          <div className="w-px h-12 bg-gradient-to-b from-white/20 to-transparent" />
 
         </motion.div>
 
@@ -448,19 +414,11 @@ export default function Home() {
 
           >
 
-            <motion.div variants={fadeInUp} className="mb-16">
+            <motion.div variants={fadeInUp} className="mb-16 text-center">
 
-              <p className="text-xs font-semibold uppercase tracking-widest text-purple-400 mb-3">
+              <p className="text-xs font-semibold uppercase tracking-widest text-purple-400 mb-3">Selected Work</p>
 
-                Selected Work
-
-              </p>
-
-              <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight">
-
-                Projects
-
-              </h2>
+              <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight">Projects</h2>
 
             </motion.div>
 
@@ -468,13 +426,13 @@ export default function Home() {
 
               {projects.map((project) => (
 
-                <motion.article
+                <motion.div
 
                   key={project.id}
 
                   variants={scaleIn}
 
-                  className="group relative bg-[#1a1a1a] rounded-2xl overflow-hidden border border-white/5 hover:border-purple-500/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.5)]"
+                  className="group relative bg-[#1a1a1a] rounded-2xl overflow-hidden border border-white/5 hover:border-purple-500/30 transition-all duration-500"
 
                 >
 
@@ -490,31 +448,25 @@ export default function Home() {
 
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
 
-                      onError={(e) => {
-
-                        (e.currentTarget as HTMLImageElement).src =
-
-                          `https://picsum.photos/seed/${project.id}/800/600`;
-
-                      }}
-
                     />
 
                     <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-transparent to-transparent" />
 
                     {project.featured && (
 
-                      <span className="absolute top-4 right-4 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-500/20 border border-purple-500/30 text-purple-300 text-xs font-medium">
+                      <div className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full bg-purple-500/20 border border-purple-500/30 text-purple-300 text-xs font-medium">
 
-                        <Star size={10} /> Featured
+                        <Star size={10} />
 
-                      </span>
+                        Featured
+
+                      </div>
 
                     )}
 
                   </div>
 
-                  {/* Content */}
+                  {/* Body */}
 
                   <div className="p-6">
 
@@ -524,11 +476,7 @@ export default function Home() {
 
                     </h3>
 
-                    <p className="text-white/50 text-sm leading-relaxed mb-4">
-
-                      {project.description}
-
-                    </p>
+                    <p className="text-white/50 text-sm leading-relaxed mb-4">{project.description}</p>
 
                     <div className="flex flex-wrap gap-2 mb-5">
 
@@ -538,7 +486,7 @@ export default function Home() {
 
                           key={tag}
 
-                          className="px-2.5 py-1 rounded-md bg-white/5 text-white/50 text-xs font-medium"
+                          className="px-2.5 py-1 rounded-md bg-white/5 border border-white/8 text-white/50 text-xs font-medium"
 
                         >
 
@@ -564,7 +512,7 @@ export default function Home() {
 
                   </div>
 
-                </motion.article>
+                </motion.div>
 
               ))}
 
@@ -594,19 +542,11 @@ export default function Home() {
 
           >
 
-            <motion.div variants={fadeInUp} className="mb-16">
+            <motion.div variants={fadeInUp} className="mb-16 text-center">
 
-              <p className="text-xs font-semibold uppercase tracking-widest text-purple-400 mb-3">
+              <p className="text-xs font-semibold uppercase tracking-widest text-purple-400 mb-3">What I work with</p>
 
-                Expertise
-
-              </p>
-
-              <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight">
-
-                Skills
-
-              </h2>
+              <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight">Skills</h2>
 
             </motion.div>
 
@@ -624,13 +564,13 @@ export default function Home() {
 
                     variants={fadeInUp}
 
-                    className="p-6 rounded-2xl bg-[#1a1a1a] border border-white/5 hover:border-purple-500/20 transition-all duration-300 group"
+                    className="bg-[#1a1a1a] rounded-2xl p-6 border border-white/5 hover:border-purple-500/20 transition-all duration-300 group"
 
                   >
 
                     <div className="flex items-start justify-between mb-4">
 
-                      <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover:bg-purple-500/20 transition-colors duration-300">
+                      <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 group-hover:bg-purple-500/20 transition-colors duration-300">
 
                         <Icon size={18} />
 
@@ -642,7 +582,7 @@ export default function Home() {
 
                     <h3 className="font-semibold text-white mb-3">{skill.name}</h3>
 
-                    <div className="h-1 rounded-full bg-white/5 overflow-hidden">
+                    <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
 
                       <motion.div
 
@@ -654,7 +594,7 @@ export default function Home() {
 
                         transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
 
-                        className="h-full rounded-full bg-gradient-to-r from-purple-500 to-purple-400"
+                        className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
 
                       />
 
@@ -694,19 +634,11 @@ export default function Home() {
 
           >
 
-            <motion.div variants={fadeInUp} className="mb-16">
+            <motion.div variants={fadeInUp} className="mb-16 text-center">
 
-              <p className="text-xs font-semibold uppercase tracking-widest text-purple-400 mb-3">
+              <p className="text-xs font-semibold uppercase tracking-widest text-purple-400 mb-3">Career</p>
 
-                Career
-
-              </p>
-
-              <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight">
-
-                Experience
-
-              </h2>
+              <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight">Experience</h2>
 
             </motion.div>
 
@@ -714,37 +646,37 @@ export default function Home() {
 
               {/* Timeline line */}
 
-              <div className="absolute left-0 top-2 bottom-2 w-px bg-gradient-to-b from-purple-500/40 via-purple-500/20 to-transparent" />
+              <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-purple-500/40 via-purple-500/20 to-transparent" />
 
-              <div className="flex flex-col gap-10">
+              <div className="flex flex-col gap-10 pl-8">
 
-                {experiences.map((exp, i) => (
+                {experiences.map((exp) => (
 
-                  <motion.div
-
-                    key={exp.id}
-
-                    variants={slideInLeft}
-
-                    className="pl-8 relative"
-
-                  >
+                  <motion.div key={exp.id} variants={slideInLeft} className="relative">
 
                     {/* Dot */}
 
-                    <div className="absolute left-[-4.5px] top-1.5 w-2.5 h-2.5 rounded-full bg-purple-500 ring-4 ring-[#0f0f0f]" />
+                    <div className="absolute -left-[2.15rem] top-1.5 w-3 h-3 rounded-full bg-purple-500 border-2 border-[#0f0f0f] shadow-[0_0_12px_rgba(168,85,247,0.6)]" />
 
-                    <div className="flex flex-wrap items-center gap-3 mb-1">
+                    <div className="bg-[#1a1a1a] rounded-2xl p-6 border border-white/5">
 
-                      <h3 className="font-display text-lg font-bold">{exp.role}</h3>
+                      <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
 
-                      <span className="text-purple-400 font-semibold text-sm">{exp.company}</span>
+                        <div>
+
+                          <h3 className="font-display font-bold text-lg text-white">{exp.role}</h3>
+
+                          <p className="text-purple-400 text-sm font-medium">{exp.company}</p>
+
+                        </div>
+
+                        <span className="text-xs text-white/30 font-mono bg-white/5 px-3 py-1 rounded-full">{exp.period}</span>
+
+                      </div>
+
+                      <p className="text-white/50 text-sm leading-relaxed">{exp.description}</p>
 
                     </div>
-
-                    <p className="text-xs text-white/30 mb-3 font-medium tracking-wide">{exp.period}</p>
-
-                    <p className="text-white/55 text-sm leading-relaxed">{exp.description}</p>
 
                   </motion.div>
 
@@ -782,45 +714,33 @@ export default function Home() {
 
             <motion.div variants={slideInLeft}>
 
-              <p className="text-xs font-semibold uppercase tracking-widest text-purple-400 mb-3">
+              <p className="text-xs font-semibold uppercase tracking-widest text-purple-400 mb-3">About me</p>
 
-                About
+              <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-6">
 
-              </p>
+                Crafting digital{" "}
 
-              <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight mb-6">
-
-                A bit about me
+                <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">experiences</span>
 
               </h2>
 
-              <div className="space-y-4 text-white/55 leading-relaxed">
+              <div className="space-y-4 text-white/50 leading-relaxed">
 
                 <p>
 
-                  I&apos;m {APP_NAME}, a {APP_TAGLINE} based in London. I&apos;ve spent
-
-                  the last 6+ years building products that sit at the intersection
-
-                  of engineering rigour and thoughtful design.
+                  I&apos;m {APP_NAME}, a full-stack developer with 6+ years of experience building products that sit at the intersection of engineering and design.
 
                 </p>
 
                 <p>
 
-                  My sweet spot is the frontend — React, TypeScript, animation —
-
-                  but I&apos;m equally comfortable diving into backend systems,
-
-                  databases, and infrastructure when the project demands it.
+                  My sweet spot is the front-end — React, Next.js, TypeScript — but I&apos;m equally comfortable architecting APIs, designing databases, and shipping to production.
 
                 </p>
 
                 <p>
 
-                  Outside of code I&apos;m into generative art, mechanical keyboards,
-
-                  and long-distance cycling.
+                  When I&apos;m not coding, I&apos;m probably hiking, reading about type theory, or tinkering with generative art.
 
                 </p>
 
@@ -828,19 +748,19 @@ export default function Home() {
 
               <div className="mt-8 flex flex-wrap gap-3">
 
-                {["Open to work", "Remote-friendly", "Based in London"].map((badge) => (
+                {["Open to work", "Remote-friendly", "Based in NYC"].map((tag) => (
 
                   <span
 
-                    key={badge}
+                    key={tag}
 
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/60 text-xs font-medium"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/60 text-xs font-medium"
 
                   >
 
                     <CheckCircle size={11} className="text-purple-400" />
 
-                    {badge}
+                    {tag}
 
                   </span>
 
@@ -854,19 +774,19 @@ export default function Home() {
 
               <div className="relative w-full aspect-square max-w-sm mx-auto">
 
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-purple-500/20 to-purple-800/10 border border-purple-500/20" />
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/10 rounded-3xl" />
 
-                <div className="absolute inset-4 rounded-2xl bg-[#1a1a1a] flex items-center justify-center">
+                <div className="absolute inset-4 bg-[#1a1a1a] rounded-2xl border border-white/5 flex items-center justify-center">
 
                   <div className="text-center">
 
-                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-purple-700 mx-auto mb-4 flex items-center justify-center text-3xl font-bold font-display">
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 mx-auto mb-4 flex items-center justify-center text-3xl font-bold font-display">
 
                       {APP_NAME.charAt(0)}
 
                     </div>
 
-                    <p className="font-display font-bold text-lg">{APP_NAME}</p>
+                    <p className="font-display font-bold text-xl">{APP_NAME}</p>
 
                     <p className="text-white/40 text-sm">{APP_TAGLINE}</p>
 
@@ -876,15 +796,15 @@ export default function Home() {
 
                 {/* Floating badges */}
 
-                <div className="absolute -top-4 -right-4 px-3 py-2 rounded-xl bg-[#1a1a1a] border border-white/10 text-xs font-medium text-white/70 shadow-xl">
+                <div className="absolute -top-4 -right-4 bg-[#1a1a1a] border border-white/10 rounded-xl px-3 py-2 text-xs font-medium">
 
-                  6+ years exp.
+                  <span className="text-purple-400">6+</span> years exp.
 
                 </div>
 
-                <div className="absolute -bottom-4 -left-4 px-3 py-2 rounded-xl bg-[#1a1a1a] border border-white/10 text-xs font-medium text-white/70 shadow-xl">
+                <div className="absolute -bottom-4 -left-4 bg-[#1a1a1a] border border-white/10 rounded-xl px-3 py-2 text-xs font-medium">
 
-                  20+ projects
+                  <span className="text-purple-400">40+</span> projects
 
                 </div>
 
@@ -916,31 +836,21 @@ export default function Home() {
 
           >
 
-            <motion.div variants={fadeInUp} className="text-center mb-14">
+            <motion.div variants={fadeInUp} className="text-center mb-12">
 
-              <p className="text-xs font-semibold uppercase tracking-widest text-purple-400 mb-3">
+              <p className="text-xs font-semibold uppercase tracking-widest text-purple-400 mb-3">Let&apos;s talk</p>
 
-                Contact
+              <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-4">Get in touch</h2>
 
-              </p>
+              <p className="text-white/40">
 
-              <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight mb-4">
-
-                Let&apos;s work together
-
-              </h2>
-
-              <p className="text-white/50">
-
-                Have a project in mind? I&apos;d love to hear about it.
+                Have a project in mind? I&apos;d love to hear about it. Send me a message and I&apos;ll get back to you within 24 hours.
 
               </p>
 
             </motion.div>
 
             <motion.form
-
-              ref={formRef}
 
               variants={fadeInUp}
 
@@ -954,11 +864,7 @@ export default function Home() {
 
                 <div>
 
-                  <label className="block text-xs font-medium text-white/40 mb-2 uppercase tracking-wider">
-
-                    Name
-
-                  </label>
+                  <label className="block text-xs font-medium text-white/40 mb-2 uppercase tracking-wider">Name</label>
 
                   <input
 
@@ -966,9 +872,13 @@ export default function Home() {
 
                     required
 
-                    placeholder="Your name"
+                    value={formState.name}
 
-                    className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all duration-200"
+                    onChange={(e) => setFormState((s) => ({ ...s, name: e.target.value }))}
+
+                    placeholder="John Doe"
+
+                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all duration-200"
 
                   />
 
@@ -976,11 +886,7 @@ export default function Home() {
 
                 <div>
 
-                  <label className="block text-xs font-medium text-white/40 mb-2 uppercase tracking-wider">
-
-                    Email
-
-                  </label>
+                  <label className="block text-xs font-medium text-white/40 mb-2 uppercase tracking-wider">Email</label>
 
                   <input
 
@@ -988,9 +894,13 @@ export default function Home() {
 
                     required
 
-                    placeholder="your@email.com"
+                    value={formState.email}
 
-                    className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all duration-200"
+                    onChange={(e) => setFormState((s) => ({ ...s, email: e.target.value }))}
+
+                    placeholder="john@example.com"
+
+                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all duration-200"
 
                   />
 
@@ -1000,31 +910,7 @@ export default function Home() {
 
               <div>
 
-                <label className="block text-xs font-medium text-white/40 mb-2 uppercase tracking-wider">
-
-                  Subject
-
-                </label>
-
-                <input
-
-                  type="text"
-
-                  placeholder="What's this about?"
-
-                  className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all duration-200"
-
-                />
-
-              </div>
-
-              <div>
-
-                <label className="block text-xs font-medium text-white/40 mb-2 uppercase tracking-wider">
-
-                  Message
-
-                </label>
+                <label className="block text-xs font-medium text-white/40 mb-2 uppercase tracking-wider">Message</label>
 
                 <textarea
 
@@ -1032,9 +918,13 @@ export default function Home() {
 
                   rows={5}
 
-                  placeholder="Tell me about your project…"
+                  value={formState.message}
 
-                  className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-white/10 text-white placeholder-white/20 text-sm focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all duration-200 resize-none"
+                  onChange={(e) => setFormState((s) => ({ ...s, message: e.target.value }))}
+
+                  placeholder="Tell me about your project..."
+
+                  className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all duration-200 resize-none"
 
                 />
 
@@ -1044,45 +934,23 @@ export default function Home() {
 
                 type="submit"
 
-                disabled={formState === "sending" || formState === "sent"}
+                disabled={formStatus === "sending" || formStatus === "sent"}
 
-                className="w-full py-4 rounded-xl bg-purple-500 hover:bg-purple-400 disabled:opacity-60 disabled:cursor-not-allowed font-semibold text-sm transition-all duration-300 shadow-[0_0_24px_rgba(168,85,247,0.3)] hover:shadow-[0_0_36px_rgba(168,85,247,0.5)]"
+                className="w-full py-3.5 rounded-xl bg-purple-500 text-white font-semibold text-sm hover:bg-purple-400 disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-300 shadow-[0_0_24px_rgba(168,85,247,0.3)] hover:shadow-[0_0_36px_rgba(168,85,247,0.5)]"
 
               >
 
-                {formState === "sending"
-
-                  ? "Sending…"
-
-                  : formState === "sent"
-
-                  ? "Message sent ✓"
-
-                  : "Send message"}
+                {formStatus === "sending" ? "Sending..." : formStatus === "sent" ? "Message sent ✓" : "Send message"}
 
               </button>
 
+              {formStatus === "error" && (
+
+                <p className="text-red-400 text-sm text-center">Something went wrong. Please try again.</p>
+
+              )}
+
             </motion.form>
-
-            {/* Direct email */}
-
-            <motion.p variants={fadeInUp} className="text-center text-white/30 text-sm mt-8">
-
-              Or email me directly at{" "}
-
-              <a
-
-                href={`mailto:${APP_EMAIL}`}
-
-                className="text-purple-400 hover:text-purple-300 transition-colors duration-200"
-
-              >
-
-                {APP_EMAIL}
-
-              </a>
-
-            </motion.p>
 
           </motion.div>
 
