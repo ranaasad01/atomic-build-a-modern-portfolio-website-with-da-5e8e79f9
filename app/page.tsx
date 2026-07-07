@@ -190,21 +190,27 @@ const experiences = [
 
 export default function Home() {
 
+  const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
+  const formRef = useRef<HTMLFormElement>(null);
+
   const shouldReduceMotion = useReducedMotion();
 
-  const [formState, setFormState] = useState({ name: "", email: "", message: "" });
+  const motionProps = (variants: Variants) =>
 
-  const [formStatus, setFormStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+    shouldReduceMotion ? {} : { variants };
 
   const handleSubmit = async (e: React.FormEvent) => {
 
     e.preventDefault();
 
-    setFormStatus("sending");
+    setFormState("sending");
 
-    await new Promise((r) => setTimeout(r, 1200));
+    await new Promise((r) => setTimeout(r, 1400));
 
-    setFormStatus("sent");
+    setFormState("sent");
+
+    formRef.current?.reset();
 
   };
 
@@ -218,23 +224,53 @@ export default function Home() {
 
         id="home"
 
-        className="relative min-h-screen flex flex-col justify-center items-center text-center px-6 pt-24 pb-16 overflow-hidden"
+        className="relative min-h-screen flex items-center justify-center overflow-hidden"
 
       >
 
-        {/* Background glows */}
+        {/* Background layers */}
 
-        <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(168,85,247,0.18),transparent)]" />
 
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[120px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_60%,#0f0f0f)]" />
 
-          <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-purple-800/8 rounded-full blur-[100px]" />
+        <div
 
-        </div>
+          className="absolute inset-0 opacity-[0.03]"
 
-        {/* Grid overlay */}
+          style={{
 
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:72px_72px] pointer-events-none" />
+            backgroundImage:
+
+              "linear-gradient(rgba(255,255,255,0.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.5) 1px,transparent 1px)",
+
+            backgroundSize: "72px 72px",
+
+          }}
+
+        />
+
+        {/* Floating orbs */}
+
+        <motion.div
+
+          animate={{ y: [0, -24, 0], opacity: [0.15, 0.3, 0.15] }}
+
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+
+          className="absolute top-1/4 left-1/4 w-72 h-72 rounded-full bg-purple-600/20 blur-[100px] pointer-events-none"
+
+        />
+
+        <motion.div
+
+          animate={{ y: [0, 20, 0], opacity: [0.1, 0.2, 0.1] }}
+
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+
+          className="absolute bottom-1/3 right-1/4 w-96 h-96 rounded-full bg-violet-500/15 blur-[120px] pointer-events-none"
+
+        />
 
         {/* Content */}
 
@@ -246,151 +282,119 @@ export default function Home() {
 
           animate="visible"
 
-          className="relative z-10 max-w-4xl mx-auto"
+          className="relative z-10 max-w-4xl mx-auto px-6 text-center"
 
         >
 
-          {/* Availability badge */}
+          <motion.div variants={fadeInUp} className="mb-6">
 
-          <motion.div variants={fadeInUp} className="flex justify-center mb-8">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300 text-xs font-semibold tracking-widest uppercase">
 
-            <div style={{ backgroundColor: '#ef4444' }} className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 text-sm text-white/70">
+              <Sparkles size={12} />
 
-              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+              Available for work
 
-              Available for new projects
-
-            </div>
+            </span>
 
           </motion.div>
-
-          {/* Headline */}
 
           <motion.h1
 
             variants={fadeInUp}
 
-            className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.05] mb-6"
+            className="font-display text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tight leading-[0.95] mb-6"
 
           >
 
-            Hi, I&apos;m{" "}
+            <span className="block text-white">{APP_NAME}</span>
 
-            <span className="bg-gradient-to-r from-purple-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-purple-400 via-violet-400 to-purple-600 bg-clip-text text-transparent">
 
-              {APP_NAME}
+              {APP_TAGLINE}
 
             </span>
 
           </motion.h1>
 
-          {/* Sub-headline */}
-
           <motion.p
 
             variants={fadeInUp}
 
-            className="text-lg sm:text-xl text-white/50 max-w-2xl mx-auto leading-relaxed mb-10"
+            className="text-white/50 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed mb-10"
 
           >
 
-            I build{" "}
+            I design and build digital products that live at the intersection of
 
-            <span className="text-white/80 font-medium">fast, accessible, beautiful</span>{" "}
+            engineering rigour and visual craft — from design systems to
 
-            web products — from pixel-perfect UIs to scalable back-end systems.
+            full-stack applications.
 
           </motion.p>
 
-          {/* CTAs */}
+          <motion.div
 
-          <motion.div variants={fadeInUp} className="flex flex-wrap justify-center gap-4">
+            variants={fadeInUp}
 
-            <Link
+            className="flex flex-wrap items-center justify-center gap-4"
+
+          >
+
+            <a
 
               href="#projects"
 
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-purple-500 text-white font-semibold text-sm hover:bg-purple-400 transition-all duration-300 shadow-[0_0_24px_rgba(168,85,247,0.4)] hover:shadow-[0_0_36px_rgba(168,85,247,0.6)]"
+              style={{ backgroundColor: '#f97316' }}
+
+              className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-white shadow-[0_0_24px_rgba(168,85,247,0.35)] hover:shadow-[0_0_36px_rgba(168,85,247,0.55)] transition-all duration-300 hover:-translate-y-0.5"
 
             >
 
-              View my work <ArrowRight size={16} />
+              View my work
 
-            </Link>
+              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-300" />
 
-            <Link
+            </a>
 
-              href="#contact"
+            <a
 
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-white/15 text-white/80 font-semibold text-sm hover:border-white/30 hover:text-white transition-all duration-300"
+              href={`mailto:${APP_EMAIL}`}
+
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-white/80 border border-white/10 hover:border-white/30 hover:text-white bg-white/5 hover:bg-white/10 transition-all duration-300 hover:-translate-y-0.5"
 
             >
+
+              <Mail size={16} />
 
               Get in touch
 
-            </Link>
+            </a>
 
           </motion.div>
 
-          {/* Social row */}
+          {/* Scroll indicator */}
 
-          <motion.div variants={fadeInUp} className="flex justify-center items-center gap-5 mt-12">
+          <motion.div
 
-            {[
+            variants={fadeIn}
 
-              { icon: Github, label: "GitHub", href: "https://github.com" },
+            className="mt-20 flex flex-col items-center gap-2 text-white/20"
 
-              { icon: Twitter, label: "Twitter", href: "https://twitter.com" },
+          >
 
-              { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com" },
+            <span className="text-xs tracking-widest uppercase">Scroll</span>
 
-              { icon: Mail, label: "Email", href: `mailto:${APP_EMAIL}` },
+            <motion.div
 
-            ].map(({ icon: Icon, label, href }) => (
+              animate={{ y: [0, 8, 0] }}
 
-              <a
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
 
-                key={label}
+              className="w-px h-10 bg-gradient-to-b from-white/20 to-transparent"
 
-                href={href}
-
-                target={href.startsWith("http") ? "_blank" : undefined}
-
-                rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-
-                aria-label={label}
-
-                className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-purple-400 hover:border-purple-500/40 hover:bg-purple-500/10 transition-all duration-300"
-
-              >
-
-                <Icon size={16} />
-
-              </a>
-
-            ))}
+            />
 
           </motion.div>
-
-        </motion.div>
-
-        {/* Scroll indicator */}
-
-        <motion.div
-
-          initial={{ opacity: 0 }}
-
-          animate={{ opacity: 1 }}
-
-          transition={{ delay: 1.5, duration: 0.8 }}
-
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-
-        >
-
-          <span className="text-xs text-white/20 uppercase tracking-widest">Scroll</span>
-
-          <div className="w-px h-12 bg-gradient-to-b from-white/20 to-transparent" />
 
         </motion.div>
 
@@ -398,7 +402,7 @@ export default function Home() {
 
       {/* ── PROJECTS ── */}
 
-      <section id="projects" className="py-28 px-6">
+      <section id="projects" className="py-32 px-6">
 
         <div className="max-w-6xl mx-auto">
 
@@ -412,103 +416,377 @@ export default function Home() {
 
             viewport={{ once: true, margin: "-80px" }}
 
+            className="mb-16"
+
           >
 
-            <motion.div variants={fadeInUp} className="mb-16 text-center">
+            <motion.p
 
-              <p className="text-xs font-semibold uppercase tracking-widest text-purple-400 mb-3">Selected Work</p>
+              variants={fadeInUp}
 
-              <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight">Projects</h2>
+              className="text-purple-400 text-xs font-semibold tracking-widest uppercase mb-3"
 
-            </motion.div>
+            >
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              Selected work
 
-              {projects.map((project) => (
+            </motion.p>
 
-                <motion.div
+            <motion.h2
 
-                  key={project.id}
+              variants={fadeInUp}
 
-                  variants={scaleIn}
+              className="font-display text-4xl sm:text-5xl font-bold text-white"
 
-                  className="group relative bg-[#1a1a1a] rounded-2xl overflow-hidden border border-white/5 hover:border-purple-500/30 transition-all duration-500"
+            >
 
-                >
+              Projects
 
-                  {/* Image */}
+            </motion.h2>
 
-                  <div className="relative h-52 overflow-hidden">
+          </motion.div>
 
-                    <img
+          <motion.div
 
-                      src={project.image}
+            variants={staggerContainer}
 
-                      alt={project.title}
+            initial="hidden"
 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            whileInView="visible"
 
-                    />
+            viewport={{ once: true, margin: "-60px" }}
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-transparent to-transparent" />
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
 
-                    {project.featured && (
+          >
 
-                      <div className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full bg-purple-500/20 border border-purple-500/30 text-purple-300 text-xs font-medium">
+            {projects.map((project) => (
 
-                        <Star size={10} />
+              <motion.article
 
-                        Featured
+                key={project.id}
 
-                      </div>
+                variants={scaleIn}
 
-                    )}
+                className="group relative bg-[#1a1a1a] border border-white/5 rounded-2xl overflow-hidden hover:border-purple-500/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.5)]"
+
+              >
+
+                {project.featured && (
+
+                  <div className="absolute top-4 right-4 z-10 flex items-center gap-1 px-2.5 py-1 rounded-full bg-purple-500/20 border border-purple-500/30 text-purple-300 text-xs font-semibold">
+
+                    <Star size={10} fill="currentColor" />
+
+                    Featured
 
                   </div>
 
-                  {/* Body */}
+                )}
 
-                  <div className="p-6">
+                <div className="aspect-video overflow-hidden">
 
-                    <h3 className="font-display text-xl font-bold mb-2 group-hover:text-purple-300 transition-colors duration-300">
+                  <img
 
-                      {project.title}
+                    src={project.image}
 
-                    </h3>
+                    alt={project.title}
 
-                    <p className="text-white/50 text-sm leading-relaxed mb-4">{project.description}</p>
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
 
-                    <div className="flex flex-wrap gap-2 mb-5">
+                    onError={(e) => {
 
-                      {project.tags.map((tag) => (
+                      (e.target as HTMLImageElement).src = `https://picsum.photos/seed/${project.id}/800/450`;
 
-                        <span
+                    }}
 
-                          key={tag}
+                  />
 
-                          className="px-2.5 py-1 rounded-md bg-white/5 border border-white/8 text-white/50 text-xs font-medium"
+                </div>
 
-                        >
+                <div className="p-6">
 
-                          {tag}
+                  <h3 className="font-display text-xl font-bold text-white mb-2 group-hover:text-purple-300 transition-colors duration-300">
 
-                        </span>
+                    {project.title}
 
-                      ))}
+                  </h3>
+
+                  <p className="text-white/50 text-sm leading-relaxed mb-4">
+
+                    {project.description}
+
+                  </p>
+
+                  <div className="flex flex-wrap gap-2 mb-5">
+
+                    {project.tags.map((tag) => (
+
+                      <span
+
+                        key={tag}
+
+                        className="px-2.5 py-1 rounded-md bg-white/5 border border-white/8 text-white/60 text-xs font-medium"
+
+                      >
+
+                        {tag}
+
+                      </span>
+
+                    ))}
+
+                  </div>
+
+                  <a
+
+                    href={project.link}
+
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-purple-400 hover:text-purple-300 transition-colors duration-200"
+
+                  >
+
+                    <Eye size={14} />
+
+                    View project
+
+                    <ExternalLink size={12} />
+
+                  </a>
+
+                </div>
+
+              </motion.article>
+
+            ))}
+
+          </motion.div>
+
+        </div>
+
+      </section>
+
+      {/* ── SKILLS ── */}
+
+      <section id="skills" className="py-32 px-6 bg-[#0a0a0a]">
+
+        <div className="max-w-6xl mx-auto">
+
+          <motion.div
+
+            variants={staggerContainer}
+
+            initial="hidden"
+
+            whileInView="visible"
+
+            viewport={{ once: true, margin: "-80px" }}
+
+            className="mb-16"
+
+          >
+
+            <motion.p
+
+              variants={fadeInUp}
+
+              className="text-purple-400 text-xs font-semibold tracking-widest uppercase mb-3"
+
+            >
+
+              What I work with
+
+            </motion.p>
+
+            <motion.h2
+
+              variants={fadeInUp}
+
+              className="font-display text-4xl sm:text-5xl font-bold text-white"
+
+            >
+
+              Skills
+
+            </motion.h2>
+
+          </motion.div>
+
+          <motion.div
+
+            variants={staggerContainer}
+
+            initial="hidden"
+
+            whileInView="visible"
+
+            viewport={{ once: true, margin: "-60px" }}
+
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+
+          >
+
+            {skills.map((skill) => {
+
+              const Icon = skill.icon;
+
+              return (
+
+                <motion.div
+
+                  key={skill.name}
+
+                  variants={fadeInUp}
+
+                  className="group p-6 rounded-2xl bg-[#1a1a1a] border border-white/5 hover:border-purple-500/30 transition-all duration-300 hover:-translate-y-0.5"
+
+                >
+
+                  <div className="flex items-start justify-between mb-4">
+
+                    <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 group-hover:bg-purple-500/20 transition-colors duration-300">
+
+                      <Icon size={18} />
 
                     </div>
 
-                    <a
+                    <span className="text-xs font-medium text-white/30 bg-white/5 px-2.5 py-1 rounded-full">
 
-                      href={project.link}
+                      {skill.category}
 
-                      className="inline-flex items-center gap-1.5 text-sm font-medium text-purple-400 hover:text-purple-300 transition-colors duration-200"
+                    </span>
 
-                    >
+                  </div>
 
-                      View project <ExternalLink size={13} />
+                  <h3 className="font-semibold text-white mb-3">{skill.name}</h3>
 
-                    </a>
+                  <div className="h-1.5 rounded-full bg-white/5 overflow-hidden">
+
+                    <motion.div
+
+                      initial={{ width: 0 }}
+
+                      whileInView={{ width: `${skill.level}%` }}
+
+                      viewport={{ once: true }}
+
+                      transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+
+                      className="h-full rounded-full bg-gradient-to-r from-purple-500 to-violet-400"
+
+                    />
+
+                  </div>
+
+                  <p className="text-right text-xs text-white/30 mt-1.5">{skill.level}%</p>
+
+                </motion.div>
+
+              );
+
+            })}
+
+          </motion.div>
+
+        </div>
+
+      </section>
+
+      {/* ── EXPERIENCE ── */}
+
+      <section id="experience" className="py-32 px-6">
+
+        <div className="max-w-3xl mx-auto">
+
+          <motion.div
+
+            variants={staggerContainer}
+
+            initial="hidden"
+
+            whileInView="visible"
+
+            viewport={{ once: true, margin: "-80px" }}
+
+            className="mb-16"
+
+          >
+
+            <motion.p
+
+              variants={fadeInUp}
+
+              className="text-purple-400 text-xs font-semibold tracking-widest uppercase mb-3"
+
+            >
+
+              Career
+
+            </motion.p>
+
+            <motion.h2
+
+              variants={fadeInUp}
+
+              className="font-display text-4xl sm:text-5xl font-bold text-white"
+
+            >
+
+              Experience
+
+            </motion.h2>
+
+          </motion.div>
+
+          <motion.div
+
+            variants={staggerContainer}
+
+            initial="hidden"
+
+            whileInView="visible"
+
+            viewport={{ once: true, margin: "-60px" }}
+
+            className="relative"
+
+          >
+
+            {/* Timeline line */}
+
+            <div className="absolute left-0 top-2 bottom-2 w-px bg-gradient-to-b from-purple-500/50 via-purple-500/20 to-transparent" />
+
+            <div className="flex flex-col gap-10 pl-8">
+
+              {experiences.map((exp) => (
+
+                <motion.div key={exp.id} variants={slideInLeft} className="relative">
+
+                  {/* Dot */}
+
+                  <div className="absolute -left-[2.125rem] top-1.5 w-3 h-3 rounded-full bg-purple-500 border-2 border-[#0f0f0f] shadow-[0_0_12px_rgba(168,85,247,0.6)]" />
+
+                  <div className="p-6 rounded-2xl bg-[#1a1a1a] border border-white/5 hover:border-purple-500/20 transition-colors duration-300">
+
+                    <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
+
+                      <div>
+
+                        <h3 className="font-display font-bold text-white text-lg">{exp.role}</h3>
+
+                        <p className="text-purple-400 text-sm font-medium">{exp.company}</p>
+
+                      </div>
+
+                      <span className="text-xs text-white/30 bg-white/5 px-3 py-1 rounded-full whitespace-nowrap">
+
+                        {exp.period}
+
+                      </span>
+
+                    </div>
+
+                    <p className="text-white/50 text-sm leading-relaxed">{exp.description}</p>
 
                   </div>
 
@@ -524,177 +802,9 @@ export default function Home() {
 
       </section>
 
-      {/* ── SKILLS ── */}
-
-      <section id="skills" className="py-28 px-6 bg-[#0a0a0a]">
-
-        <div className="max-w-6xl mx-auto">
-
-          <motion.div
-
-            variants={staggerContainer}
-
-            initial="hidden"
-
-            whileInView="visible"
-
-            viewport={{ once: true, margin: "-80px" }}
-
-          >
-
-            <motion.div variants={fadeInUp} className="mb-16 text-center">
-
-              <p className="text-xs font-semibold uppercase tracking-widest text-purple-400 mb-3">What I work with</p>
-
-              <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight">Skills</h2>
-
-            </motion.div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-
-              {skills.map((skill) => {
-
-                const Icon = skill.icon;
-
-                return (
-
-                  <motion.div
-
-                    key={skill.name}
-
-                    variants={fadeInUp}
-
-                    className="bg-[#1a1a1a] rounded-2xl p-6 border border-white/5 hover:border-purple-500/20 transition-all duration-300 group"
-
-                  >
-
-                    <div className="flex items-start justify-between mb-4">
-
-                      <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 group-hover:bg-purple-500/20 transition-colors duration-300">
-
-                        <Icon size={18} />
-
-                      </div>
-
-                      <span className="text-xs text-white/30 font-medium">{skill.category}</span>
-
-                    </div>
-
-                    <h3 className="font-semibold text-white mb-3">{skill.name}</h3>
-
-                    <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
-
-                      <motion.div
-
-                        initial={{ width: 0 }}
-
-                        whileInView={{ width: `${skill.level}%` }}
-
-                        viewport={{ once: true }}
-
-                        transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-
-                        className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
-
-                      />
-
-                    </div>
-
-                    <p className="text-right text-xs text-white/30 mt-1.5">{skill.level}%</p>
-
-                  </motion.div>
-
-                );
-
-              })}
-
-            </div>
-
-          </motion.div>
-
-        </div>
-
-      </section>
-
-      {/* ── EXPERIENCE ── */}
-
-      <section id="experience" className="py-28 px-6">
-
-        <div className="max-w-3xl mx-auto">
-
-          <motion.div
-
-            variants={staggerContainer}
-
-            initial="hidden"
-
-            whileInView="visible"
-
-            viewport={{ once: true, margin: "-80px" }}
-
-          >
-
-            <motion.div variants={fadeInUp} className="mb-16 text-center">
-
-              <p className="text-xs font-semibold uppercase tracking-widest text-purple-400 mb-3">Career</p>
-
-              <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight">Experience</h2>
-
-            </motion.div>
-
-            <div className="relative">
-
-              {/* Timeline line */}
-
-              <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-purple-500/40 via-purple-500/20 to-transparent" />
-
-              <div className="flex flex-col gap-10 pl-8">
-
-                {experiences.map((exp) => (
-
-                  <motion.div key={exp.id} variants={slideInLeft} className="relative">
-
-                    {/* Dot */}
-
-                    <div className="absolute -left-[2.15rem] top-1.5 w-3 h-3 rounded-full bg-purple-500 border-2 border-[#0f0f0f] shadow-[0_0_12px_rgba(168,85,247,0.6)]" />
-
-                    <div className="bg-[#1a1a1a] rounded-2xl p-6 border border-white/5">
-
-                      <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
-
-                        <div>
-
-                          <h3 className="font-display font-bold text-lg text-white">{exp.role}</h3>
-
-                          <p className="text-purple-400 text-sm font-medium">{exp.company}</p>
-
-                        </div>
-
-                        <span className="text-xs text-white/30 font-mono bg-white/5 px-3 py-1 rounded-full">{exp.period}</span>
-
-                      </div>
-
-                      <p className="text-white/50 text-sm leading-relaxed">{exp.description}</p>
-
-                    </div>
-
-                  </motion.div>
-
-                ))}
-
-              </div>
-
-            </div>
-
-          </motion.div>
-
-        </div>
-
-      </section>
-
       {/* ── ABOUT ── */}
 
-      <section id="about" className="py-28 px-6 bg-[#0a0a0a]">
+      <section id="about" className="py-32 px-6 bg-[#0a0a0a]">
 
         <div className="max-w-6xl mx-auto">
 
@@ -714,13 +824,19 @@ export default function Home() {
 
             <motion.div variants={slideInLeft}>
 
-              <p className="text-xs font-semibold uppercase tracking-widest text-purple-400 mb-3">About me</p>
+              <p className="text-purple-400 text-xs font-semibold tracking-widest uppercase mb-3">
 
-              <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-6">
+                About me
 
-                Crafting digital{" "}
+              </p>
 
-                <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">experiences</span>
+              <h2 className="font-display text-4xl sm:text-5xl font-bold text-white mb-6">
+
+                Crafting with code
+
+                <br />
+
+                <span className="text-white/30">&amp; intention</span>
 
               </h2>
 
@@ -728,19 +844,23 @@ export default function Home() {
 
                 <p>
 
-                  I&apos;m {APP_NAME}, a full-stack developer with 6+ years of experience building products that sit at the intersection of engineering and design.
+                  I&apos;m {APP_NAME}, a creative developer with 6+ years building
+
+                  products that balance technical excellence with thoughtful
+
+                  design. I care deeply about performance, accessibility, and the
+
+                  tiny details that make an interface feel alive.
 
                 </p>
 
                 <p>
 
-                  My sweet spot is the front-end — React, Next.js, TypeScript — but I&apos;m equally comfortable architecting APIs, designing databases, and shipping to production.
+                  When I&apos;m not shipping code, I&apos;m contributing to open source,
 
-                </p>
+                  writing about frontend architecture, or exploring generative
 
-                <p>
-
-                  When I&apos;m not coding, I&apos;m probably hiking, reading about type theory, or tinkering with generative art.
+                  art with WebGL.
 
                 </p>
 
@@ -748,17 +868,17 @@ export default function Home() {
 
               <div className="mt-8 flex flex-wrap gap-3">
 
-                {["Open to work", "Remote-friendly", "Based in NYC"].map((tag) => (
+                {["Open Source", "Design Systems", "WebGL", "Performance", "Accessibility"].map((tag) => (
 
                   <span
 
                     key={tag}
 
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/60 text-xs font-medium"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-medium"
 
                   >
 
-                    <CheckCircle size={11} className="text-purple-400" />
+                    <CheckCircle size={11} />
 
                     {tag}
 
@@ -772,21 +892,21 @@ export default function Home() {
 
             <motion.div variants={slideInRight} className="relative">
 
-              <div className="relative w-full aspect-square max-w-sm mx-auto">
+              <div className="relative aspect-square max-w-sm mx-auto">
 
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/10 rounded-3xl" />
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-purple-500/20 to-violet-600/10 border border-purple-500/20" />
 
-                <div className="absolute inset-4 bg-[#1a1a1a] rounded-2xl border border-white/5 flex items-center justify-center">
+                <div className="absolute inset-4 rounded-2xl bg-[#1a1a1a] border border-white/5 flex items-center justify-center">
 
                   <div className="text-center">
 
-                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 mx-auto mb-4 flex items-center justify-center text-3xl font-bold font-display">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-500 to-violet-600 mx-auto mb-4 flex items-center justify-center text-3xl font-bold font-display">
 
                       {APP_NAME.charAt(0)}
 
                     </div>
 
-                    <p className="font-display font-bold text-xl">{APP_NAME}</p>
+                    <p className="font-display font-bold text-white text-xl">{APP_NAME}</p>
 
                     <p className="text-white/40 text-sm">{APP_TAGLINE}</p>
 
@@ -794,19 +914,11 @@ export default function Home() {
 
                 </div>
 
-                {/* Floating badges */}
+                {/* Decorative corners */}
 
-                <div className="absolute -top-4 -right-4 bg-[#1a1a1a] border border-white/10 rounded-xl px-3 py-2 text-xs font-medium">
+                <div className="absolute -top-2 -right-2 w-6 h-6 border-t-2 border-r-2 border-purple-500/50 rounded-tr-lg" />
 
-                  <span className="text-purple-400">6+</span> years exp.
-
-                </div>
-
-                <div className="absolute -bottom-4 -left-4 bg-[#1a1a1a] border border-white/10 rounded-xl px-3 py-2 text-xs font-medium">
-
-                  <span className="text-purple-400">40+</span> projects
-
-                </div>
+                <div className="absolute -bottom-2 -left-2 w-6 h-6 border-b-2 border-l-2 border-purple-500/50 rounded-bl-lg" />
 
               </div>
 
@@ -820,7 +932,7 @@ export default function Home() {
 
       {/* ── CONTACT ── */}
 
-      <section id="contact" className="py-28 px-6">
+      <section id="contact" className="py-32 px-6">
 
         <div className="max-w-2xl mx-auto">
 
@@ -836,23 +948,43 @@ export default function Home() {
 
           >
 
-            <motion.div variants={fadeInUp} className="text-center mb-12">
+            <motion.p
 
-              <p className="text-xs font-semibold uppercase tracking-widest text-purple-400 mb-3">Let&apos;s talk</p>
+              variants={fadeInUp}
 
-              <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-4">Get in touch</h2>
+              className="text-purple-400 text-xs font-semibold tracking-widest uppercase mb-3"
 
-              <p className="text-white/40">
+            >
 
-                Have a project in mind? I&apos;d love to hear about it. Send me a message and I&apos;ll get back to you within 24 hours.
+              Let&apos;s talk
 
-              </p>
+            </motion.p>
 
-            </motion.div>
+            <motion.h2
+
+              variants={fadeInUp}
+
+              className="font-display text-4xl sm:text-5xl font-bold text-white mb-4"
+
+            >
+
+              Get in touch
+
+            </motion.h2>
+
+            <motion.p variants={fadeInUp} className="text-white/40 mb-10">
+
+              Have a project in mind or just want to say hello? I&apos;d love to hear
+
+              from you.
+
+            </motion.p>
 
             <motion.form
 
               variants={fadeInUp}
+
+              ref={formRef}
 
               onSubmit={handleSubmit}
 
@@ -864,7 +996,11 @@ export default function Home() {
 
                 <div>
 
-                  <label className="block text-xs font-medium text-white/40 mb-2 uppercase tracking-wider">Name</label>
+                  <label className="block text-xs font-medium text-white/40 mb-2 uppercase tracking-wider">
+
+                    Name
+
+                  </label>
 
                   <input
 
@@ -872,13 +1008,9 @@ export default function Home() {
 
                     required
 
-                    value={formState.name}
+                    placeholder="Your name"
 
-                    onChange={(e) => setFormState((s) => ({ ...s, name: e.target.value }))}
-
-                    placeholder="John Doe"
-
-                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all duration-200"
+                    className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-white/20 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all duration-200 text-sm"
 
                   />
 
@@ -886,7 +1018,11 @@ export default function Home() {
 
                 <div>
 
-                  <label className="block text-xs font-medium text-white/40 mb-2 uppercase tracking-wider">Email</label>
+                  <label className="block text-xs font-medium text-white/40 mb-2 uppercase tracking-wider">
+
+                    Email
+
+                  </label>
 
                   <input
 
@@ -894,13 +1030,9 @@ export default function Home() {
 
                     required
 
-                    value={formState.email}
+                    placeholder="your@email.com"
 
-                    onChange={(e) => setFormState((s) => ({ ...s, email: e.target.value }))}
-
-                    placeholder="john@example.com"
-
-                    className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all duration-200"
+                    className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-white/20 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all duration-200 text-sm"
 
                   />
 
@@ -910,7 +1042,11 @@ export default function Home() {
 
               <div>
 
-                <label className="block text-xs font-medium text-white/40 mb-2 uppercase tracking-wider">Message</label>
+                <label className="block text-xs font-medium text-white/40 mb-2 uppercase tracking-wider">
+
+                  Message
+
+                </label>
 
                 <textarea
 
@@ -918,13 +1054,9 @@ export default function Home() {
 
                   rows={5}
 
-                  value={formState.message}
-
-                  onChange={(e) => setFormState((s) => ({ ...s, message: e.target.value }))}
-
                   placeholder="Tell me about your project..."
 
-                  className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all duration-200 resize-none"
+                  className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-white/20 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all duration-200 text-sm resize-none"
 
                 />
 
@@ -934,21 +1066,45 @@ export default function Home() {
 
                 type="submit"
 
-                disabled={formStatus === "sending" || formStatus === "sent"}
+                disabled={formState === "sending" || formState === "sent"}
 
-                className="w-full py-3.5 rounded-xl bg-purple-500 text-white font-semibold text-sm hover:bg-purple-400 disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-300 shadow-[0_0_24px_rgba(168,85,247,0.3)] hover:shadow-[0_0_36px_rgba(168,85,247,0.5)]"
+                className="w-full py-4 rounded-xl font-semibold text-white bg-purple-500 hover:bg-purple-400 disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-300 shadow-[0_0_24px_rgba(168,85,247,0.3)] hover:shadow-[0_0_36px_rgba(168,85,247,0.5)] flex items-center justify-center gap-2"
 
               >
 
-                {formStatus === "sending" ? "Sending..." : formStatus === "sent" ? "Message sent ✓" : "Send message"}
+                {formState === "sending" && (
+
+                  <motion.div
+
+                    animate={{ rotate: 360 }}
+
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+
+                    className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
+
+                  />
+
+                )}
+
+                {formState === "idle" && "Send message"}
+
+                {formState === "sending" && "Sending..."}
+
+                {formState === "sent" && (
+
+                  <>
+
+                    <CheckCircle size={16} />
+
+                    Message sent!
+
+                  </>
+
+                )}
+
+                {formState === "error" && "Try again"}
 
               </button>
-
-              {formStatus === "error" && (
-
-                <p className="text-red-400 text-sm text-center">Something went wrong. Please try again.</p>
-
-              )}
 
             </motion.form>
 
