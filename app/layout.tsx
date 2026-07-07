@@ -18,15 +18,15 @@ const syne = Syne({
 });
 
 export const metadata: Metadata = {
-  title: "Alex Mercer — Creative Developer",
+  title: "Asad Rana — Creative Developer",
   description:
-    "Portfolio of Alex Mercer, a creative developer crafting immersive digital experiences with precision and purpose.",
+    "Portfolio of Asad Rana, a creative developer crafting immersive digital experiences with precision and purpose.",
   keywords: ["developer", "portfolio", "creative", "frontend", "design"],
-  authors: [{ name: "Alex Mercer" }],
+  authors: [{ name: "Asad Rana" }],
   openGraph: {
-    title: "Alex Mercer — Creative Developer",
+    title: "Asad Rana — Creative Developer",
     description:
-      "Portfolio of Alex Mercer, a creative developer crafting immersive digital experiences.",
+      "Portfolio of Asad Rana, a creative developer crafting immersive digital experiences.",
     type: "website",
   },
 };

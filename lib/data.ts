@@ -1,6 +1,6 @@
-export const APP_NAME = "Alex Mercer";
+export const APP_NAME = "Asad Rana";
 export const APP_TAGLINE = "Creative Developer";
-export const APP_EMAIL = "hello@alexmercer.dev";
+export const APP_EMAIL = "hello@asadrana.dev";
 
 export type NavLink = {
   label: string;
