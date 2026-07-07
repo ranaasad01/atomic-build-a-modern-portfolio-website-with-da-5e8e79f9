@@ -1,4 +1,5 @@
 "use client";
+
 import { useRef, useState } from "react";
 import Link from "next/link";
 
@@ -774,7 +775,7 @@ export default function HomePage() {
                 data-atomic-id="a1n517jb">
 
                 <img
-                  src="https://static.wikia.nocookie.net/prototype/images/8/87/Mercer_Blade_Concept.jpg/revision/latest/scale-to-width-down/1200?cb=20120106165703"
+                  src="https://titoaistorageaccount.blob.core.windows.net/titoai-storage/assets/5e8e79f9-d63d-43f9-9f01-a11e18e461ec/b8ebbaa064f94aaea3346ff09df95dee.png?v=1783412987615"
                   alt="Alex Mercer's workspace"
                   className="w-full aspect-video object-cover"
                   data-atomic-id="a15j7wuc" />
