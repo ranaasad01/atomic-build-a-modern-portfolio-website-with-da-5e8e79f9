@@ -819,7 +819,10 @@ export default function Home() {
                 key={stat.label}
                 className="p-6 rounded-2xl bg-[#1a1a1a] border border-white/5 text-center"
                 data-atomic-id="abx30mt"
-                data-atomic-instance={__atomicIdx}>
+                data-atomic-instance={__atomicIdx}
+                style={__atomicIdx === 0 ? {
+                  backgroundColor: "#f97316"
+                } : undefined}>
                 <p
                   className="font-display text-3xl font-bold text-blue-400 mb-1"
                   data-atomic-id="a4ay5t1"
