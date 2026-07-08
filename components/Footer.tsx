@@ -44,7 +44,7 @@ export default function Footer() {
   return (
     <footer className="relative bg-[#0a0a0a] border-t border-white/5 overflow-hidden">
       {/* Subtle glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-px bg-gradient-to-r from-transparent via-purple-500/40 to-transparent" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-px bg-gradient-to-r from-transparent via-red-500/40 to-transparent" />
 
       <motion.div
         variants={staggerContainer}
@@ -58,9 +58,9 @@ export default function Footer() {
           <motion.div variants={fadeInUp} className="md:col-span-1">
             <Link
               href="/"
-              className="font-display text-xl font-bold tracking-tight text-white hover:text-purple-400 transition-colors duration-300 inline-block mb-3"
+              className="font-display text-xl font-bold tracking-tight text-white hover:text-red-400 transition-colors duration-300 inline-block mb-3"
             >
-              <span className="text-purple-400">A</span>
+              <span className="text-red-400">A</span>
               {APP_NAME.slice(1)}
             </Link>
             <p className="text-white/40 text-sm leading-relaxed mb-6 max-w-xs">
@@ -75,7 +75,7 @@ export default function Footer() {
                   target={href.startsWith("http") ? "_blank" : undefined}
                   rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                   aria-label={label}
-                  className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-purple-400 hover:border-purple-500/40 hover:bg-purple-500/10 transition-all duration-300"
+                  className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-red-400 hover:border-red-500/40 hover:bg-red-500/10 transition-all duration-300"
                 >
                   <Icon size={15} />
                 </a>
@@ -110,7 +110,7 @@ export default function Footer() {
             </p>
             <a
               href={`mailto:${APP_EMAIL}`}
-              className="text-sm text-white/50 hover:text-purple-400 transition-colors duration-200 block mb-3"
+              className="text-sm text-white/50 hover:text-red-400 transition-colors duration-200 block mb-3"
             >
               {APP_EMAIL}
             </a>
@@ -130,11 +130,11 @@ export default function Footer() {
           </p>
           <button
             onClick={scrollToTop}
-            className="flex items-center gap-2 text-xs text-white/30 hover:text-purple-400 transition-colors duration-200 group"
+            className="flex items-center gap-2 text-xs text-white/30 hover:text-red-400 transition-colors duration-200 group"
             aria-label="Scroll to top"
           >
             Back to top
-            <span className="w-6 h-6 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-purple-500/40 group-hover:bg-purple-500/10 transition-all duration-300">
+            <span className="w-6 h-6 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-red-500/40 group-hover:bg-red-500/10 transition-all duration-300">
               <ArrowUp size={11} />
             </span>
           </button>

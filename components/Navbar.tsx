@@ -58,9 +58,9 @@ export default function Navbar() {
         {/* Logo */}
         <Link
           href="/"
-          className="font-display text-lg font-bold tracking-tight text-white hover:text-purple-400 transition-colors duration-300"
+          className="font-display text-lg font-bold tracking-tight text-white hover:text-red-400 transition-colors duration-300"
         >
-          <span className="text-purple-400">A</span>
+          <span className="text-red-400">A</span>
           {APP_NAME.slice(1)}
         </Link>
 
@@ -102,7 +102,7 @@ export default function Navbar() {
           <Link
             href={getLinkHref(navCTA.href)}
             onClick={(e) => handleAnchorClick(e, navCTA.href)}
-            className="px-5 py-2 text-sm font-semibold rounded-full bg-purple-500 text-white hover:bg-purple-400 transition-all duration-300 shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_28px_rgba(168,85,247,0.5)]"
+            className="px-5 py-2 text-sm font-semibold rounded-full bg-red-500 text-white hover:bg-red-400 transition-all duration-300 shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_28px_rgba(168,85,247,0.5)]"
           >
             {navCTA.label}
           </Link>
@@ -154,7 +154,7 @@ export default function Navbar() {
                 <Link
                   href={getLinkHref(navCTA.href)}
                   onClick={(e) => handleAnchorClick(e, navCTA.href)}
-                  className="block px-4 py-3 text-sm font-semibold text-center rounded-full bg-purple-500 text-white hover:bg-purple-400 transition-all duration-300"
+                  className="block px-4 py-3 text-sm font-semibold text-center rounded-full bg-red-500 text-white hover:bg-red-400 transition-all duration-300"
                 >
                   {navCTA.label}
                 </Link>
