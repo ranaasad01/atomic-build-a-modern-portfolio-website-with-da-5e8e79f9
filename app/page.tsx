@@ -436,7 +436,11 @@ export default function Home() {
 
               <h2
                 className="font-display text-4xl sm:text-5xl font-bold tracking-tight"
-                data-atomic-id="ag1chny">Projects</h2>
+                data-atomic-id="ag1chny"
+                style={{
+                  color: "#d946ef",
+                  backgroundColor: "#22c55e"
+                }}>Projects</h2>
 
             </motion.div>
 
