@@ -511,7 +511,10 @@ export default function Home() {
                     <p
                       className="text-white/50 text-sm leading-relaxed mb-4"
                       data-atomic-id="amesdst"
-                      data-atomic-instance={i}>{project.description}</p>
+                      data-atomic-instance={i}
+                      style={i === 0 ? {
+                        fontSize: "28px"
+                      } : undefined}>{project.description}</p>
 
                     <div
                       className="flex flex-wrap gap-2 mb-5"
