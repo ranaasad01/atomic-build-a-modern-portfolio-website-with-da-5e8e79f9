@@ -1,5 +1,5 @@
-"use client";
-import { useRef, useState } from "react";
+"use client";
+import { useRef, useState } from "react";
 import Link from "next/link";
 
 import { motion, useReducedMotion, type Variants } from "framer-motion";
@@ -48,7 +48,7 @@ const projects = [
 
     tags: ["React", "TypeScript", "Radix UI", "Storybook"],
 
-    image: "https://assets-us-01.kc-usercontent.com/90e79cae-25c6-00b5-6f5b-27efe5c250ab/76b96548-694f-46d7-a2f4-5b6f1b865f2d/UX%20Design.jpg?h=474&fm=webp",
+    image: "https://titoaistorageaccount.blob.core.windows.net/titoai-storage/assets/5e8e79f9-d63d-43f9-9f01-a11e18e461ec/98c1dc5aa565492898fccb8b801a4b10.png?v=1783510438601",
 
     link: "#",
 
