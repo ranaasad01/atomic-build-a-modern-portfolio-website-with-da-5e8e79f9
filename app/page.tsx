@@ -295,7 +295,7 @@ export default function Home() {
 
             <span
               className="bg-gradient-to-r from-blue-400 via-blue-400 to-blue-600 bg-clip-text text-transparent"
-              data-atomic-id="a1se5xt9">Asad Rana</span>
+              data-atomic-id="a1se5xt9">Junaid</span>
 
           </motion.h1>
 
