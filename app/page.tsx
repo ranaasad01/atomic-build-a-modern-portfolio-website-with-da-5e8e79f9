@@ -180,9 +180,21 @@ const experiences = [
 
     description:
 
-      "Prototyped and shipped the canvas interaction engine. Contributed to the open-source motion library and mentored two junior engineers.",
+      "Prototyped and shipped the canvas interaction engine. Contributed to the open-source motion library and mentored 3 junior engineers through structured pairing sessions.",
 
   },
+
+];
+
+const socials = [
+
+  { icon: Github, label: "GitHub", href: "https://github.com" },
+
+  { icon: Twitter, label: "Twitter", href: "https://twitter.com" },
+
+  { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com" },
+
+  { icon: Mail, label: "Email", href: `mailto:${APP_EMAIL}` },
 
 ];
 
@@ -190,17 +202,13 @@ const experiences = [
 
 export default function Home() {
 
-  const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const shouldReduceMotion = useReducedMotion();
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  const shouldReduceMotion = useReducedMotion();
+  const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
-  const motionProps = (variants: Variants) =>
-
-    shouldReduceMotion ? {} : { variants };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
     e.preventDefault();
 
@@ -209,8 +217,6 @@ export default function Home() {
     await new Promise((r) => setTimeout(r, 1400));
 
     setFormState("sent");
-
-    formRef.current?.reset();
 
   };
 
@@ -224,55 +230,37 @@ export default function Home() {
 
         id="home"
 
-        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+        className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-24 pb-16 overflow-hidden"
 
       >
 
-        {/* Background layers */}
+        {/* Background glows */}
 
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(168,85,247,0.18),transparent)]" />
+        <div className="absolute inset-0 pointer-events-none">
 
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_60%,#0f0f0f)]" />
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[120px]" />
+
+          <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-purple-900/10 rounded-full blur-[100px]" />
+
+        </div>
+
+        {/* Grid overlay */}
 
         <div
 
-          className="absolute inset-0 opacity-[0.03]"
+          className="absolute inset-0 pointer-events-none opacity-[0.03]"
 
           style={{
 
             backgroundImage:
 
-              "linear-gradient(rgba(255,255,255,0.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.5) 1px,transparent 1px)",
+              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
 
             backgroundSize: "72px 72px",
 
           }}
 
         />
-
-        {/* Floating orbs */}
-
-        <motion.div
-
-          animate={{ y: [0, -24, 0], opacity: [0.15, 0.3, 0.15] }}
-
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-
-          className="absolute top-1/4 left-1/4 w-72 h-72 rounded-full bg-purple-600/20 blur-[100px] pointer-events-none"
-
-        />
-
-        <motion.div
-
-          animate={{ y: [0, 20, 0], opacity: [0.1, 0.2, 0.1] }}
-
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-
-          className="absolute bottom-1/3 right-1/4 w-96 h-96 rounded-full bg-violet-500/15 blur-[120px] pointer-events-none"
-
-        />
-
-        {/* Content */}
 
         <motion.div
 
@@ -282,55 +270,59 @@ export default function Home() {
 
           animate="visible"
 
-          className="relative z-10 max-w-4xl mx-auto px-6 text-center"
+          className="relative z-10 max-w-4xl mx-auto text-center"
 
         >
 
-          <motion.div variants={fadeInUp} className="mb-6">
+          {/* Badge */}
 
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300 text-xs font-semibold tracking-widest uppercase">
+          <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300 text-xs font-medium tracking-widest uppercase mb-8">
 
-              <Sparkles size={12} />
+            <Sparkles size={12} />
 
-              Available for work
-
-            </span>
+            Available for work
 
           </motion.div>
+
+          {/* Headline */}
 
           <motion.h1
 
             variants={fadeInUp}
 
-            className="font-display text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tight leading-[0.95] mb-6"
+            className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.05] mb-6"
 
           >
 
-            <span className="block text-white">{APP_NAME}</span>
+            Hi, I&apos;m{" "}
 
-            <span className="block bg-gradient-to-r from-purple-400 via-violet-400 to-purple-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-purple-400 via-fuchsia-400 to-purple-600 bg-clip-text text-transparent">
 
-              {APP_TAGLINE}
+              {APP_NAME}
 
             </span>
 
           </motion.h1>
 
+          {/* Sub */}
+
           <motion.p
 
             variants={fadeInUp}
 
-            className="text-white/50 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed mb-10"
+            className="text-lg sm:text-xl text-white/50 max-w-2xl mx-auto leading-relaxed mb-10"
 
           >
 
-            I design and build digital products that live at the intersection of
+            I build{" "}
 
-            engineering rigour and visual craft — from design systems to
+            <span className="text-white/80 font-medium">fast, accessible, beautiful</span>{" "}
 
-            full-stack applications.
+            web products — from pixel-perfect UIs to scalable backend systems.
 
           </motion.p>
+
+          {/* CTAs */}
 
           <motion.div
 
@@ -344,9 +336,9 @@ export default function Home() {
 
               href="#projects"
 
-              style={{ backgroundColor: '#f97316' }}
+              style={{ backgroundColor: '#d946ef' }}
 
-              className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-white shadow-[0_0_24px_rgba(168,85,247,0.35)] hover:shadow-[0_0_36px_rgba(168,85,247,0.55)] transition-all duration-300 hover:-translate-y-0.5"
+              className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-semibold text-white transition-all duration-300 shadow-[0_0_24px_rgba(168,85,247,0.35)] hover:shadow-[0_0_36px_rgba(168,85,247,0.55)] hover:scale-105"
 
             >
 
@@ -358,13 +350,11 @@ export default function Home() {
 
             <a
 
-              href={`mailto:${APP_EMAIL}`}
+              href="#contact"
 
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-white/80 border border-white/10 hover:border-white/30 hover:text-white bg-white/5 hover:bg-white/10 transition-all duration-300 hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-semibold text-white/80 border border-white/10 hover:border-white/30 hover:text-white bg-white/5 hover:bg-white/10 transition-all duration-300"
 
             >
-
-              <Mail size={16} />
 
               Get in touch
 
@@ -372,29 +362,69 @@ export default function Home() {
 
           </motion.div>
 
-          {/* Scroll indicator */}
+          {/* Socials */}
 
           <motion.div
 
-            variants={fadeIn}
+            variants={fadeInUp}
 
-            className="mt-20 flex flex-col items-center gap-2 text-white/20"
+            className="flex items-center justify-center gap-4 mt-12"
 
           >
 
-            <span className="text-xs tracking-widest uppercase">Scroll</span>
+            {socials.map(({ icon: Icon, label, href }) => (
 
-            <motion.div
+              <a
 
-              animate={{ y: [0, 8, 0] }}
+                key={label}
 
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                href={href}
 
-              className="w-px h-10 bg-gradient-to-b from-white/20 to-transparent"
+                target={href.startsWith("http") ? "_blank" : undefined}
 
-            />
+                rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+
+                aria-label={label}
+
+                className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-purple-400 hover:border-purple-500/40 hover:bg-purple-500/10 transition-all duration-300"
+
+              >
+
+                <Icon size={16} />
+
+              </a>
+
+            ))}
 
           </motion.div>
+
+        </motion.div>
+
+        {/* Scroll indicator */}
+
+        <motion.div
+
+          initial={{ opacity: 0, y: 10 }}
+
+          animate={{ opacity: 1, y: 0 }}
+
+          transition={{ delay: 1.2, duration: 0.6 }}
+
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+
+        >
+
+          <span className="text-white/20 text-xs tracking-widest uppercase">Scroll</span>
+
+          <motion.div
+
+            animate={{ y: [0, 6, 0] }}
+
+            transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }}
+
+            className="w-px h-8 bg-gradient-to-b from-purple-500/60 to-transparent"
+
+          />
 
         </motion.div>
 
@@ -402,7 +432,7 @@ export default function Home() {
 
       {/* ── PROJECTS ── */}
 
-      <section id="projects" className="py-32 px-6">
+      <section id="projects" className="py-28 px-6">
 
         <div className="max-w-6xl mx-auto">
 
@@ -416,149 +446,115 @@ export default function Home() {
 
             viewport={{ once: true, margin: "-80px" }}
 
-            className="mb-16"
-
           >
 
-            <motion.p
+            <motion.div variants={fadeInUp} className="mb-16">
 
-              variants={fadeInUp}
+              <p className="text-purple-400 text-xs font-semibold uppercase tracking-widest mb-3">Selected Work</p>
 
-              className="text-purple-400 text-xs font-semibold tracking-widest uppercase mb-3"
+              <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight">Projects</h2>
 
-            >
+            </motion.div>
 
-              Selected work
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            </motion.p>
+              {projects.map((project, i) => (
 
-            <motion.h2
+                <motion.article
 
-              variants={fadeInUp}
+                  key={project.id}
 
-              className="font-display text-4xl sm:text-5xl font-bold text-white"
+                  variants={scaleIn}
 
-            >
+                  className="group relative bg-[#1a1a1a] rounded-2xl overflow-hidden border border-white/5 hover:border-purple-500/30 transition-all duration-500 hover:shadow-[0_0_40px_rgba(168,85,247,0.1)]"
 
-              Projects
+                >
 
-            </motion.h2>
+                  {/* Image */}
 
-          </motion.div>
+                  <div className="relative h-52 overflow-hidden">
 
-          <motion.div
+                    <img
 
-            variants={staggerContainer}
+                      src={project.image}
 
-            initial="hidden"
+                      alt={project.title}
 
-            whileInView="visible"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
 
-            viewport={{ once: true, margin: "-60px" }}
+                      onError={(e) => {
 
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+                        (e.currentTarget as HTMLImageElement).src = `https://picsum.photos/seed/${project.id}/800/600`;
 
-          >
+                      }}
 
-            {projects.map((project) => (
+                    />
 
-              <motion.article
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-transparent to-transparent" />
 
-                key={project.id}
+                    {project.featured && (
 
-                variants={scaleIn}
+                      <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/20 border border-purple-500/30 text-purple-300 text-xs font-medium">
 
-                className="group relative bg-[#1a1a1a] border border-white/5 rounded-2xl overflow-hidden hover:border-purple-500/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.5)]"
-
-              >
-
-                {project.featured && (
-
-                  <div className="absolute top-4 right-4 z-10 flex items-center gap-1 px-2.5 py-1 rounded-full bg-purple-500/20 border border-purple-500/30 text-purple-300 text-xs font-semibold">
-
-                    <Star size={10} fill="currentColor" />
-
-                    Featured
-
-                  </div>
-
-                )}
-
-                <div className="aspect-video overflow-hidden">
-
-                  <img
-
-                    src={project.image}
-
-                    alt={project.title}
-
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-
-                    onError={(e) => {
-
-                      (e.target as HTMLImageElement).src = `https://picsum.photos/seed/${project.id}/800/450`;
-
-                    }}
-
-                  />
-
-                </div>
-
-                <div className="p-6">
-
-                  <h3 className="font-display text-xl font-bold text-white mb-2 group-hover:text-purple-300 transition-colors duration-300">
-
-                    {project.title}
-
-                  </h3>
-
-                  <p className="text-white/50 text-sm leading-relaxed mb-4">
-
-                    {project.description}
-
-                  </p>
-
-                  <div className="flex flex-wrap gap-2 mb-5">
-
-                    {project.tags.map((tag) => (
-
-                      <span
-
-                        key={tag}
-
-                        className="px-2.5 py-1 rounded-md bg-white/5 border border-white/8 text-white/60 text-xs font-medium"
-
-                      >
-
-                        {tag}
+                        <Star size={10} fill="currentColor" /> Featured
 
                       </span>
 
-                    ))}
+                    )}
 
                   </div>
 
-                  <a
+                  {/* Content */}
 
-                    href={project.link}
+                  <div className="p-6">
 
-                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-purple-400 hover:text-purple-300 transition-colors duration-200"
+                    <h3 className="font-display text-xl font-bold mb-2 group-hover:text-purple-300 transition-colors duration-300">
 
-                  >
+                      {project.title}
 
-                    <Eye size={14} />
+                    </h3>
 
-                    View project
+                    <p className="text-white/50 text-sm leading-relaxed mb-4">{project.description}</p>
 
-                    <ExternalLink size={12} />
+                    <div className="flex flex-wrap gap-2 mb-5">
 
-                  </a>
+                      {project.tags.map((tag) => (
 
-                </div>
+                        <span
 
-              </motion.article>
+                          key={tag}
 
-            ))}
+                          className="px-2.5 py-1 rounded-md bg-white/5 border border-white/8 text-white/50 text-xs font-medium"
+
+                        >
+
+                          {tag}
+
+                        </span>
+
+                      ))}
+
+                    </div>
+
+                    <a
+
+                      href={project.link}
+
+                      className="inline-flex items-center gap-1.5 text-sm font-medium text-purple-400 hover:text-purple-300 transition-colors duration-200"
+
+                    >
+
+                      <Eye size={14} /> View project <ExternalLink size={12} />
+
+                    </a>
+
+                  </div>
+
+                </motion.article>
+
+              ))}
+
+            </div>
 
           </motion.div>
 
@@ -568,7 +564,7 @@ export default function Home() {
 
       {/* ── SKILLS ── */}
 
-      <section id="skills" className="py-32 px-6 bg-[#0a0a0a]">
+      <section id="skills" className="py-28 px-6 bg-[#111111]">
 
         <div className="max-w-6xl mx-auto">
 
@@ -582,109 +578,75 @@ export default function Home() {
 
             viewport={{ once: true, margin: "-80px" }}
 
-            className="mb-16"
-
           >
 
-            <motion.p
+            <motion.div variants={fadeInUp} className="mb-16">
 
-              variants={fadeInUp}
+              <p className="text-purple-400 text-xs font-semibold uppercase tracking-widest mb-3">What I know</p>
 
-              className="text-purple-400 text-xs font-semibold tracking-widest uppercase mb-3"
+              <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight">Skills</h2>
 
-            >
+            </motion.div>
 
-              What I work with
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
 
-            </motion.p>
+              {skills.map((skill) => {
 
-            <motion.h2
+                const Icon = skill.icon;
 
-              variants={fadeInUp}
+                return (
 
-              className="font-display text-4xl sm:text-5xl font-bold text-white"
+                  <motion.div
 
-            >
+                    key={skill.name}
 
-              Skills
+                    variants={fadeInUp}
 
-            </motion.h2>
+                    className="group p-6 rounded-2xl bg-[#1a1a1a] border border-white/5 hover:border-purple-500/30 transition-all duration-400 hover:shadow-[0_0_30px_rgba(168,85,247,0.08)]"
 
-          </motion.div>
+                  >
 
-          <motion.div
+                    <div className="flex items-start justify-between mb-4">
 
-            variants={staggerContainer}
+                      <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
 
-            initial="hidden"
+                        <Icon size={18} />
 
-            whileInView="visible"
+                      </div>
 
-            viewport={{ once: true, margin: "-60px" }}
-
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
-
-          >
-
-            {skills.map((skill) => {
-
-              const Icon = skill.icon;
-
-              return (
-
-                <motion.div
-
-                  key={skill.name}
-
-                  variants={fadeInUp}
-
-                  className="group p-6 rounded-2xl bg-[#1a1a1a] border border-white/5 hover:border-purple-500/30 transition-all duration-300 hover:-translate-y-0.5"
-
-                >
-
-                  <div className="flex items-start justify-between mb-4">
-
-                    <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 group-hover:bg-purple-500/20 transition-colors duration-300">
-
-                      <Icon size={18} />
+                      <span className="text-xs text-white/30 font-medium">{skill.category}</span>
 
                     </div>
 
-                    <span className="text-xs font-medium text-white/30 bg-white/5 px-2.5 py-1 rounded-full">
+                    <p className="font-semibold text-white/90 mb-3">{skill.name}</p>
 
-                      {skill.category}
+                    <div className="h-1 rounded-full bg-white/5 overflow-hidden">
 
-                    </span>
+                      <motion.div
 
-                  </div>
+                        initial={{ width: 0 }}
 
-                  <h3 className="font-semibold text-white mb-3">{skill.name}</h3>
+                        whileInView={{ width: `${skill.level}%` }}
 
-                  <div className="h-1.5 rounded-full bg-white/5 overflow-hidden">
+                        viewport={{ once: true }}
 
-                    <motion.div
+                        transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
 
-                      initial={{ width: 0 }}
+                        className="h-full rounded-full bg-gradient-to-r from-purple-500 to-fuchsia-500"
 
-                      whileInView={{ width: `${skill.level}%` }}
+                      />
 
-                      viewport={{ once: true }}
+                    </div>
 
-                      transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+                    <p className="text-right text-xs text-white/30 mt-1.5">{skill.level}%</p>
 
-                      className="h-full rounded-full bg-gradient-to-r from-purple-500 to-violet-400"
+                  </motion.div>
 
-                    />
+                );
 
-                  </div>
+              })}
 
-                  <p className="text-right text-xs text-white/30 mt-1.5">{skill.level}%</p>
-
-                </motion.div>
-
-              );
-
-            })}
+            </div>
 
           </motion.div>
 
@@ -694,7 +656,7 @@ export default function Home() {
 
       {/* ── EXPERIENCE ── */}
 
-      <section id="experience" className="py-32 px-6">
+      <section id="experience" className="py-28 px-6">
 
         <div className="max-w-3xl mx-auto">
 
@@ -708,91 +670,45 @@ export default function Home() {
 
             viewport={{ once: true, margin: "-80px" }}
 
-            className="mb-16"
-
           >
 
-            <motion.p
+            <motion.div variants={fadeInUp} className="mb-16">
 
-              variants={fadeInUp}
+              <p className="text-purple-400 text-xs font-semibold uppercase tracking-widest mb-3">Career</p>
 
-              className="text-purple-400 text-xs font-semibold tracking-widest uppercase mb-3"
+              <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight">Experience</h2>
 
-            >
+            </motion.div>
 
-              Career
+            <div className="relative">
 
-            </motion.p>
+              {/* Timeline line */}
 
-            <motion.h2
+              <div className="absolute left-0 top-2 bottom-2 w-px bg-gradient-to-b from-purple-500/40 via-purple-500/20 to-transparent" />
 
-              variants={fadeInUp}
+              <div className="flex flex-col gap-12 pl-8">
 
-              className="font-display text-4xl sm:text-5xl font-bold text-white"
+                {experiences.map((exp) => (
 
-            >
+                  <motion.div key={exp.id} variants={slideInLeft} className="relative">
 
-              Experience
+                    {/* Dot */}
 
-            </motion.h2>
+                    <div className="absolute -left-[2.15rem] top-1.5 w-3 h-3 rounded-full bg-purple-500 border-2 border-[#0f0f0f] shadow-[0_0_10px_rgba(168,85,247,0.6)]" />
 
-          </motion.div>
+                    <p className="text-purple-400/70 text-xs font-medium tracking-widest uppercase mb-1">{exp.period}</p>
 
-          <motion.div
+                    <h3 className="font-display text-xl font-bold mb-0.5">{exp.role}</h3>
 
-            variants={staggerContainer}
+                    <p className="text-white/40 text-sm mb-3">{exp.company}</p>
 
-            initial="hidden"
+                    <p className="text-white/60 text-sm leading-relaxed">{exp.description}</p>
 
-            whileInView="visible"
+                  </motion.div>
 
-            viewport={{ once: true, margin: "-60px" }}
+                ))}
 
-            className="relative"
-
-          >
-
-            {/* Timeline line */}
-
-            <div className="absolute left-0 top-2 bottom-2 w-px bg-gradient-to-b from-purple-500/50 via-purple-500/20 to-transparent" />
-
-            <div className="flex flex-col gap-10 pl-8">
-
-              {experiences.map((exp) => (
-
-                <motion.div key={exp.id} variants={slideInLeft} className="relative">
-
-                  {/* Dot */}
-
-                  <div className="absolute -left-[2.125rem] top-1.5 w-3 h-3 rounded-full bg-purple-500 border-2 border-[#0f0f0f] shadow-[0_0_12px_rgba(168,85,247,0.6)]" />
-
-                  <div className="p-6 rounded-2xl bg-[#1a1a1a] border border-white/5 hover:border-purple-500/20 transition-colors duration-300">
-
-                    <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
-
-                      <div>
-
-                        <h3 className="font-display font-bold text-white text-lg">{exp.role}</h3>
-
-                        <p className="text-purple-400 text-sm font-medium">{exp.company}</p>
-
-                      </div>
-
-                      <span className="text-xs text-white/30 bg-white/5 px-3 py-1 rounded-full whitespace-nowrap">
-
-                        {exp.period}
-
-                      </span>
-
-                    </div>
-
-                    <p className="text-white/50 text-sm leading-relaxed">{exp.description}</p>
-
-                  </div>
-
-                </motion.div>
-
-              ))}
+              </div>
 
             </div>
 
@@ -804,7 +720,7 @@ export default function Home() {
 
       {/* ── ABOUT ── */}
 
-      <section id="about" className="py-32 px-6 bg-[#0a0a0a]">
+      <section id="about" className="py-28 px-6 bg-[#111111]">
 
         <div className="max-w-6xl mx-auto">
 
@@ -824,43 +740,29 @@ export default function Home() {
 
             <motion.div variants={slideInLeft}>
 
-              <p className="text-purple-400 text-xs font-semibold tracking-widest uppercase mb-3">
+              <p className="text-purple-400 text-xs font-semibold uppercase tracking-widest mb-3">Who I am</p>
 
-                About me
+              <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-6">About Me</h2>
 
-              </p>
-
-              <h2 className="font-display text-4xl sm:text-5xl font-bold text-white mb-6">
-
-                Crafting with code
-
-                <br />
-
-                <span className="text-white/30">&amp; intention</span>
-
-              </h2>
-
-              <div className="space-y-4 text-white/50 leading-relaxed">
+              <div className="space-y-4 text-white/60 leading-relaxed">
 
                 <p>
 
-                  I&apos;m {APP_NAME}, a creative developer with 6+ years building
+                  I&apos;m {APP_NAME}, a creative developer with 6+ years of experience building
 
-                  products that balance technical excellence with thoughtful
+                  products that sit at the intersection of engineering and design. I care deeply
 
-                  design. I care deeply about performance, accessibility, and the
+                  about performance, accessibility, and the tiny details that make an interface
 
-                  tiny details that make an interface feel alive.
+                  feel alive.
 
                 </p>
 
                 <p>
 
-                  When I&apos;m not shipping code, I&apos;m contributing to open source,
+                  When I&apos;m not shipping code, I&apos;m contributing to open source, writing about
 
-                  writing about frontend architecture, or exploring generative
-
-                  art with WebGL.
+                  frontend architecture, or exploring generative art with WebGL.
 
                 </p>
 
@@ -874,11 +776,9 @@ export default function Home() {
 
                     key={tag}
 
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-medium"
+                    className="px-3 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-medium"
 
                   >
-
-                    <CheckCircle size={11} />
 
                     {tag}
 
@@ -890,37 +790,35 @@ export default function Home() {
 
             </motion.div>
 
-            <motion.div variants={slideInRight} className="relative">
+            <motion.div variants={slideInRight} className="grid grid-cols-2 gap-4">
 
-              <div className="relative aspect-square max-w-sm mx-auto">
+              {[
 
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-purple-500/20 to-violet-600/10 border border-purple-500/20" />
+                { label: "Years of experience", value: "6+" },
 
-                <div className="absolute inset-4 rounded-2xl bg-[#1a1a1a] border border-white/5 flex items-center justify-center">
+                { label: "Projects shipped", value: "40+" },
 
-                  <div className="text-center">
+                { label: "Open source stars", value: "2k+" },
 
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-500 to-violet-600 mx-auto mb-4 flex items-center justify-center text-3xl font-bold font-display">
+                { label: "Happy clients", value: "30+" },
 
-                      {APP_NAME.charAt(0)}
+              ].map((stat) => (
 
-                    </div>
+                <div
 
-                    <p className="font-display font-bold text-white text-xl">{APP_NAME}</p>
+                  key={stat.label}
 
-                    <p className="text-white/40 text-sm">{APP_TAGLINE}</p>
+                  className="p-6 rounded-2xl bg-[#1a1a1a] border border-white/5 text-center"
 
-                  </div>
+                >
+
+                  <p className="font-display text-3xl font-bold text-purple-400 mb-1">{stat.value}</p>
+
+                  <p className="text-white/40 text-xs leading-snug">{stat.label}</p>
 
                 </div>
 
-                {/* Decorative corners */}
-
-                <div className="absolute -top-2 -right-2 w-6 h-6 border-t-2 border-r-2 border-purple-500/50 rounded-tr-lg" />
-
-                <div className="absolute -bottom-2 -left-2 w-6 h-6 border-b-2 border-l-2 border-purple-500/50 rounded-bl-lg" />
-
-              </div>
+              ))}
 
             </motion.div>
 
@@ -932,7 +830,7 @@ export default function Home() {
 
       {/* ── CONTACT ── */}
 
-      <section id="contact" className="py-32 px-6">
+      <section id="contact" className="py-28 px-6">
 
         <div className="max-w-2xl mx-auto">
 
@@ -948,43 +846,25 @@ export default function Home() {
 
           >
 
-            <motion.p
+            <motion.div variants={fadeInUp} className="text-center mb-12">
 
-              variants={fadeInUp}
+              <p className="text-purple-400 text-xs font-semibold uppercase tracking-widest mb-3">Let&apos;s talk</p>
 
-              className="text-purple-400 text-xs font-semibold tracking-widest uppercase mb-3"
+              <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-4">Get in Touch</h2>
 
-            >
+              <p className="text-white/50 leading-relaxed">
 
-              Let&apos;s talk
+                Have a project in mind or just want to say hi? My inbox is always open.
 
-            </motion.p>
+              </p>
 
-            <motion.h2
-
-              variants={fadeInUp}
-
-              className="font-display text-4xl sm:text-5xl font-bold text-white mb-4"
-
-            >
-
-              Get in touch
-
-            </motion.h2>
-
-            <motion.p variants={fadeInUp} className="text-white/40 mb-10">
-
-              Have a project in mind or just want to say hello? I&apos;d love to hear
-
-              from you.
-
-            </motion.p>
+            </motion.div>
 
             <motion.form
 
-              variants={fadeInUp}
-
               ref={formRef}
+
+              variants={fadeInUp}
 
               onSubmit={handleSubmit}
 
@@ -996,11 +876,7 @@ export default function Home() {
 
                 <div>
 
-                  <label className="block text-xs font-medium text-white/40 mb-2 uppercase tracking-wider">
-
-                    Name
-
-                  </label>
+                  <label className="block text-xs font-medium text-white/40 mb-2 uppercase tracking-widest">Name</label>
 
                   <input
 
@@ -1008,9 +884,9 @@ export default function Home() {
 
                     required
 
-                    placeholder="Your name"
+                    placeholder="John Doe"
 
-                    className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-white/20 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all duration-200 text-sm"
+                    className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-white/20 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all duration-300 text-sm"
 
                   />
 
@@ -1018,11 +894,7 @@ export default function Home() {
 
                 <div>
 
-                  <label className="block text-xs font-medium text-white/40 mb-2 uppercase tracking-wider">
-
-                    Email
-
-                  </label>
+                  <label className="block text-xs font-medium text-white/40 mb-2 uppercase tracking-widest">Email</label>
 
                   <input
 
@@ -1030,9 +902,9 @@ export default function Home() {
 
                     required
 
-                    placeholder="your@email.com"
+                    placeholder="john@example.com"
 
-                    className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-white/20 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all duration-200 text-sm"
+                    className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-white/20 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all duration-300 text-sm"
 
                   />
 
@@ -1042,11 +914,23 @@ export default function Home() {
 
               <div>
 
-                <label className="block text-xs font-medium text-white/40 mb-2 uppercase tracking-wider">
+                <label className="block text-xs font-medium text-white/40 mb-2 uppercase tracking-widest">Subject</label>
 
-                  Message
+                <input
 
-                </label>
+                  type="text"
+
+                  placeholder="Project inquiry"
+
+                  className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-white/20 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all duration-300 text-sm"
+
+                />
+
+              </div>
+
+              <div>
+
+                <label className="block text-xs font-medium text-white/40 mb-2 uppercase tracking-widest">Message</label>
 
                 <textarea
 
@@ -1056,7 +940,7 @@ export default function Home() {
 
                   placeholder="Tell me about your project..."
 
-                  className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-white/20 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all duration-200 text-sm resize-none"
+                  className="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-white/20 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-all duration-300 text-sm resize-none"
 
                 />
 
@@ -1068,37 +952,31 @@ export default function Home() {
 
                 disabled={formState === "sending" || formState === "sent"}
 
-                className="w-full py-4 rounded-xl font-semibold text-white bg-purple-500 hover:bg-purple-400 disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-300 shadow-[0_0_24px_rgba(168,85,247,0.3)] hover:shadow-[0_0_36px_rgba(168,85,247,0.5)] flex items-center justify-center gap-2"
+                className="w-full py-4 rounded-xl bg-purple-500 hover:bg-purple-400 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold text-sm transition-all duration-300 shadow-[0_0_24px_rgba(168,85,247,0.3)] hover:shadow-[0_0_36px_rgba(168,85,247,0.5)] flex items-center justify-center gap-2"
 
               >
 
                 {formState === "sending" && (
 
-                  <motion.div
+                  <motion.span
 
                     animate={{ rotate: 360 }}
 
-                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
 
-                    className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
+                    className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full inline-block"
 
                   />
 
                 )}
 
-                {formState === "idle" && "Send message"}
+                {formState === "idle" && "Send Message"}
 
                 {formState === "sending" && "Sending..."}
 
                 {formState === "sent" && (
 
-                  <>
-
-                    <CheckCircle size={16} />
-
-                    Message sent!
-
-                  </>
+                  <><CheckCircle size={16} /> Message sent!</>
 
                 )}
 
