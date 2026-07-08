@@ -1,4 +1,4 @@
-export const APP_NAME = "Asad Rana";
+export const APP_NAME = "Hammad Khan";
 export const APP_TAGLINE = "Creative Developer";
 export const APP_EMAIL = "hello@asadrana.dev";
 

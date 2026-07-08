@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   description:
     "Portfolio of Asad Rana, a creative developer crafting immersive digital experiences with precision and purpose.",
   keywords: ["developer", "portfolio", "creative", "frontend", "design"],
-  authors: [{ name: "Asad Rana" }],
+  authors: [{ name: "Hammad Khan" }],
   openGraph: {
     title: "Asad Rana — Creative Developer",
     description:
